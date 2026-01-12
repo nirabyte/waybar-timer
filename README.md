@@ -208,8 +208,8 @@ Mouse simulation:
 
 ```
 DISABLED → IDLE → SELECT → RUNNING → PAUSED → RUNNING → DONE → IDLE
-   ↑                                                            ↓
-   └─────────────────────── Right-click ────────────────────────┘
+   ↑                                                                 ↓
+   └─────────────────────── Right-click ────────────────── ──┘
 ```
 
 ### Preset System
