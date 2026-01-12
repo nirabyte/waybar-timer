@@ -202,19 +202,11 @@ Mouse simulation:
 ./timer.sh middle     # Middle click (reset)
 ./timer.sh up         # Scroll up (+1 minute)
 ./timer.sh down       # Scroll down (-1 minute)
-```
+```                                                      
 
-### State Flow
+### Timer Presets 
 
-```
-DISABLED → IDLE → SELECT → RUNNING → PAUSED → RUNNING → DONE → IDLE
-   ↑                                                                 ↓
-   └─────────────────────── Right-click ────────────────── ──┘
-```
-
-### Preset System
-
-Right-clicking in SELECT mode cycles through these presets: `1, 5, 10, 15, 20, 25, 30, 45, 60` minutes.
+Right-clicking in SELECT mode(after left clicking when timer is in idle) cycles through these presets: `1, 5, 10, 15, 20, 25, 30, 45, 60` minutes.
 
 ## Configuration
 
