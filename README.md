@@ -45,7 +45,7 @@ Flexible timer for Waybar with mouse controls and CLI commands.
 3. Add to Waybar style (`~/.config/waybar/style.css`):
 
    <details>
-   <summary>Click to expand CSS styling</summary>
+   <summary>***Click to expand CSS styling***</summary>
 
    ```css
    #custom-timer {
