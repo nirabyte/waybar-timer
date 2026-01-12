@@ -203,18 +203,6 @@ Mouse simulation:
 ./timer.sh down       # Scroll down (-1 minute)
 ```
 
-### Timer States
-
-| State    | Icon | Description                   | Display |
-| -------- | ---- | ----------------------------- | ------- |
-| DISABLED | 󰔞    | Timer disabled                | 󰔞       |
-| IDLE     | 󰔛    | Ready to set time             | 00:00   |
-| SELECT   | 󱫣    | Time selected, ready to start | MM:SS   |
-| RUNNING  | 󱫡    | Timer counting down           | MM:SS   |
-| PAUSED   | 󱫟    | Timer paused                  | MM:SS   |
-| DONE     | 󱫑    | Timer finished                | 00:00   |
-| RESET    | 󱫥    | Resetting animation           | --:--   |
-
 ### State Flow
 
 ```
