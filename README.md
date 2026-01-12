@@ -2,6 +2,8 @@
 
 Flexible timer for Waybar with mouse controls and CLI commands.
 
+![Preview](assets/preview.gif)
+
 ## Features
 
 - Countdown Timer with precise time tracking
@@ -256,6 +258,8 @@ The state is stored as: `STATE|SECONDS_SET|START_TIME|PAUSE_REMAINING|LAST_ACTIV
 Example: `RUNNING|300|1703123456|0|1703123456|2`
 
 ## Notifications
+
+![Notification](assets/notification.png)
 
 When a timer completes, it sends a notification.
 
