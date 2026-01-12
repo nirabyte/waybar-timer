@@ -11,6 +11,11 @@ Flexible timer for Waybar with mouse controls and CLI commands.
 - Visual indicators for multiple timer states: disabled, idle, select, running, paused, done
 - Low/No CPU usage
 
+## Requirements
+
+- Nerd Font installed (e.g., JetBrains Mono, Cascadia Code, etc.)
+- Notification daemon (for desktop notifications)
+
 ## Installation
 
 1. Copy the script to your desire directory:
@@ -144,10 +149,6 @@ Flexible timer for Waybar with mouse controls and CLI commands.
    ```
 
    </details>
-
-## Dependencies
-
-- Notification daemon (for desktop notifications)
 
 ## Alias (Optional)
 
