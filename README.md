@@ -17,7 +17,7 @@ Flexible timer for Waybar with mouse controls and CLI commands.
 ## Requirements
 
 - Nerd Font installed (e.g., JetBrains Mono, Cascadia Code, etc.)
-- Notification daemon like dunst, libnotify, mako or any(for desktop notifications)
+- Notification daemon (for desktop notifications e.g. dunst, libnotify, mako, etc)
 
 ## Installation
 
