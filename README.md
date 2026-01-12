@@ -62,7 +62,8 @@ Flexible timer for Waybar with mouse controls and CLI commands.
      padding: 0 9px;
      font-size: 16;
      border-radius: 15px;
-     font-family: "Doto";
+   
+     font-family: "Doto";  /* place your font here */
      font-weight: 900;
 
      transition: all 0.2s ease;
