@@ -158,6 +158,7 @@ Flexible timer for Waybar with mouse controls and CLI commands.
 For easier access, add this alias to your `~/.bashrc` or `~/.zshrc`:
 
 ```bash
+# Replace the path where you placed the script
 alias timer='~/.config/waybar/scripts/timer.sh'
 ```
 
