@@ -206,7 +206,7 @@ Mouse simulation:
 
 ### Timer Presets 
 
-Right-clicking in SELECT mode(after left clicking when timer is in idle) cycles through these presets: `1, 5, 10, 15, 20, 25, 30, 45, 60` minutes.
+Right-clicking in SELECT mode(shows plus icon in the timer) cycles through these presets: `1, 5, 10, 15, 20, 25, 30, 45, 60` minutes.
 
 ## Configuration
 
