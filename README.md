@@ -22,8 +22,7 @@ Flexible timer for Waybar with mouse controls and CLI commands.
 ## Installation
 
 
-1. Copy the script to your desire directory:
-   Example: `~/.config/waybar/scripts`
+1. Quick Installation 
 
    ```bash
    mkdir -p ~/.config/waybar/scripts && \
