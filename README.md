@@ -156,6 +156,17 @@ Flexible timer for Waybar with mouse controls and CLI commands.
 
    </details>
 
+   4. Restart your waybar:
+   For **Omarchy users** run:
+
+   ```bash
+   omarchy-restart-waybar
+   ```
+   Or run:
+   ```bash
+   pkill waybar && nohup waybar &`
+   ```
+
 ## Alias (Optional)
 
 For easier access, add this alias to your `~/.bashrc` or `~/.zshrc`:
