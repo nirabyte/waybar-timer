@@ -21,14 +21,13 @@ Flexible timer for Waybar with mouse controls and CLI commands.
 
 ## Installation
 
+
 1. Copy the script to your desire directory:
    Example: `~/.config/waybar/scripts`
 
    ```bash
-   mkdir -p ~/.config/waybar/scripts
-   cp timer.sh ~/.config/waybar/scripts/ ~
-
-   # Make it executable
+   mkdir -p ~/.config/waybar/scripts && \
+   curl -L https://raw.githubusercontent.com/nirabyte/waybar-timer/main/timer.sh -o ~/.config/waybar/scripts/timer.sh && \
    chmod +x ~/.config/waybar/scripts/timer.sh
    ```
 
