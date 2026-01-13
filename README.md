@@ -156,7 +156,7 @@ Flexible timer for Waybar with mouse controls and CLI commands.
 
    </details>
 
-   4. Restart your waybar:
+4. Restart your waybar:
    For **Omarchy users** run:
 
    ```bash
