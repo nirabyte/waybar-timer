@@ -156,8 +156,10 @@ Flexible timer for Waybar with mouse controls and CLI commands.
 
    </details>
 
+
 4. Restart your waybar:
    For **Omarchy users**
+   
     Run:
    ```bash
    omarchy-restart-waybar
@@ -171,18 +173,18 @@ Flexible timer for Waybar with mouse controls and CLI commands.
 
 For easier access, add this alias to your `~/.bashrc` or `~/.zshrc`:
 
-```bash
-# Replace the path where you placed the script
-alias timer='~/.config/waybar/scripts/timer.sh'
-```
+   ```bash
+   # Replace the path where you placed the script
+   alias timer='~/.config/waybar/scripts/timer.sh'
+   ```
 
 Then source your shell config:
 
-```bash
-source ~/.bashrc  # or source ~/.zshrc
-```
+   ```bash
+   source ~/.bashrc  # or source ~/.zshrc
+   ```
 
-Now use: `timer 10s`, `timer 5m`, etc.
+   Now use: `timer 10s`, `timer 5m`, etc.
 
 ## Usage
 
