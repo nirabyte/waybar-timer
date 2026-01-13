@@ -157,8 +157,8 @@ Flexible timer for Waybar with mouse controls and CLI commands.
    </details>
 
 4. Restart your waybar:
-   For **Omarchy users** run:
-
+   For **Omarchy users**
+    Run:
    ```bash
    omarchy-restart-waybar
    ```
@@ -271,6 +271,12 @@ When a timer completes, it sends a notification.
 - 30-27 seconds remaining: Warning icon and styling
 - ≤10 seconds remaining: Warning icon and styling
 
+
+## Uninstall 
+  To remove the script run :
+  ```
+  rm -f ~/.config/waybar/scripts/timer.sh
+  ```
 ## Contributing
 
 Submit issues or pull requests for improvements.
