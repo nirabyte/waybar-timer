@@ -2,7 +2,7 @@
 
 A highly efficient, event-driven timer and pomodoro module for Waybar with mouse controls and CLI commands.
 
-![Preview](assets/timerv2.mp4)
+(<[Preview](https://user-images.githubusercontent.com/USERNAME/REPO/assets/VIDEO_ID/video.mp4)>)
 
 ## What's New
 
@@ -417,7 +417,9 @@ rm -rf ~/.config/waybar/sounds  # optional: remove sound files
 
 ## Contributing
 
-Contributions are welcome and appreciated ❤️. Please see [Contributing Guide](CONTRIBUTING.md) for detailed information on how to get started.
+Contributions are welcome and appreciated ❤️.
+<br>
+Please see [Contributing Guide](CONTRIBUTING.md) for detailed information on how to get started.
 
 ## License
 
