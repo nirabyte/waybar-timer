@@ -419,8 +419,7 @@ rm -rf ~/.config/waybar/sounds  # optional: remove sound files
 
 ## Contributing
 
-Contributions are welcome and appreciated ❤️.
-<br>
+Contributions are welcome and appreciated ❤️\
 Please see [Contributing Guide](CONTRIBUTING.md) for detailed information on how to get started.
 
 ## License
