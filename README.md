@@ -4,9 +4,7 @@ A highly efficient, event-driven timer and pomodoro module for Waybar with mouse
 
 ## Preview
 
-<video width="100%" controls>
-  <source src="https://github.com/nirabyte/waybar-timer/raw/main/assets/timerv2.mp4" type="video/mp4">
-</video>
+https://github.com/user-attachments/assets/3bb65cbd-3923-4130-a2ee-8e5e86375802
 
 ## What's New
 
