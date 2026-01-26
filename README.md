@@ -184,7 +184,7 @@ Check out the latest updates and improvements! See [Release Notes](https://githu
    </details>
 
 4. **Setup sound effects (optional)**
-5. > [!NOTE]
+   > [!NOTE]
   > The above installation script automatically creates and puts the audio file in your `.config/waybar/sounds`
    
    Create the sounds directory if it's not already:
