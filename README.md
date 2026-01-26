@@ -188,37 +188,35 @@ Check out the latest updates and improvements! See [Release Notes](https://githu
 > [!NOTE]
 > The above installation script automatically creates and puts the audio file in your `.config/waybar/sounds`
 
-Create the sounds directory if it's not already:
+   Create the sounds directory if it's not already:
 
-```bash
-mkdir -p ~/.config/waybar/sounds
-```
+   ```bash
+   mkdir -p ~/.config/waybar/sounds
+   ```
 
-**Default setup (single sound file):**
+   **Default setup (single sound file):**
 
-Add one sound file to this directory:
+   Add one sound file to this directory:
+   - `timer.mp3` - plays for all timer events (completion, transitions, etc.)
 
-- `timer.mp3` - plays for all timer events (completion, transitions, etc.)
+   This repo includes a single `timer.mp3` sound file by default. You can download your own from:
+   - [Freesound.org](https://freesound.org)
+   - [Pixabay.com/sounds](https://pixabay.com/sound-effects)
+   - [Zapsplat.com](https://www.zapsplat.com)
 
-This repo includes a single `timer.mp3` sound file by default. You can download your own from:
+   **Advanced setup (multiple sound files):**
 
-- [Freesound.org](https://freesound.org)
-- [Pixabay.com/sounds](https://pixabay.com/sound-effects)
-- [Zapsplat.com](https://www.zapsplat.com)
+   You can customize the script to use different sounds for different events by editing the sound variables in `timer.sh`:
 
-**Advanced setup (multiple sound files):**
+   ```bash
+    SOUND_TIMER_DONE="${HOME}/.config/waybar/sounds/timer.mp3"
+    SOUND_WORK_START="${HOME}/.config/waybar/sounds/timer.mp3"
+    SOUND_BREAK_START="${HOME}/.config/waybar/sounds/timer.mp3"
+    SOUND_BREAK_END="${HOME}/.config/waybar/sounds/timer.mp3"
+    SOUND_COMPLETE="${HOME}/.config/waybar/sounds/timer.mp3"
+   ```
 
-You can customize the script to use different sounds for different events by editing the sound variables in `timer.sh`:
-
-```bash
- SOUND_TIMER_DONE="${HOME}/.config/waybar/sounds/timer.mp3"
- SOUND_WORK_START="${HOME}/.config/waybar/sounds/timer.mp3"
- SOUND_BREAK_START="${HOME}/.config/waybar/sounds/timer.mp3"
- SOUND_BREAK_END="${HOME}/.config/waybar/sounds/timer.mp3"
- SOUND_COMPLETE="${HOME}/.config/waybar/sounds/timer.mp3"
-```
-
-The script uses `paplay` (compatible with both PulseAudio and PipeWire) to play sounds.
+   The script uses `paplay` (compatible with both PulseAudio and PipeWire) to play sounds.
 
 5. **Restart your waybar**
 
