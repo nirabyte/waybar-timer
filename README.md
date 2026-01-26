@@ -8,7 +8,7 @@ https://github.com/user-attachments/assets/3bb65cbd-3923-4130-a2ee-8e5e86375802
 
 ## What's New
 
-Check out the latest updates and improvements! See [Release Notes](https://github.com/nirabyte/waybar-timer/releases) for changelog.
+Check out the latest updates and improvements! See [Release Notes](https://github.com/nirabyte/waybar-timer/releases) for detailed changelog.
 
 ## Features
 
