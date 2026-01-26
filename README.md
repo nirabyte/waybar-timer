@@ -1,3 +1,6 @@
+Here is the complete `README.md` file with the new process management details integrated.
+
+````markdown
 # Waybar Pomodoro Timer
 
 A highly efficient, timer and pomodoro module for Waybar with mouse controls and CLI commands.
@@ -8,7 +11,7 @@ https://github.com/user-attachments/assets/3bb65cbd-3923-4130-a2ee-8e5e86375802
 
 ## What's New
 
-Check out the latest updates and improvements! See [Release Notes](https://github.com/nirabyte/waybar-timer/releases) for detailed changelog.
+Check out the latest updates and improvements! See [Release Notes](https://github.com/nirabyte/waybar-timer/releases) for changelog.
 
 ## Features
 
@@ -19,7 +22,7 @@ Check out the latest updates and improvements! See [Release Notes](https://githu
 - Dynamic visual feedback with state-specific icons and colors
 - Customizable presets and helpful tooltips
 - Persistent state across Waybar restarts, syncs multiple instances
-- Zero CPU usage when idle, RAM-based storage
+- Zero CPU usage when idle
 
 ## Requirements
 
@@ -38,15 +41,16 @@ Check out the latest updates and improvements! See [Release Notes](https://githu
    curl -L https://raw.githubusercontent.com/nirabyte/waybar-timer/main/sounds/timer.mp3 -o ~/.config/waybar/sounds/timer.mp3 && \
    chmod +x ~/.config/waybar/scripts/timer.sh
    ```
+````
 
-   Or manually:
+Or manually:
 
-   ```bash
-   mkdir -p ~/.config/waybar/scripts ~/.config/waybar/sounds
-   # Save the script code to timer.sh
-   chmod +x ~/.config/waybar/scripts/timer.sh
-   # Add your timer.mp3 sound or your audio files to ~/.config/waybar/sounds/
-   ```
+```bash
+mkdir -p ~/.config/waybar/scripts ~/.config/waybar/sounds
+# Save the script code to timer.sh
+chmod +x ~/.config/waybar/scripts/timer.sh
+# Add your timer.mp3 sound or your audio files to ~/.config/waybar/sounds/
+```
 
 2. **Add or update to waybar config (~/.config/waybar/config.jsonc)**
 
@@ -66,8 +70,8 @@ Check out the latest updates and improvements! See [Release Notes](https://githu
        "on-click": "~/.config/waybar/scripts/timer.sh click",
        "on-click-right": "~/.config/waybar/scripts/timer.sh right",
        "on-click-middle": "~/.config/waybar/scripts/timer.sh middle",
-       "on-scroll-up": "~/.config/waybar/scripts/timer.sh down",  // previously up
-       "on-scroll-down": "~/.config/waybar/scripts/timer.sh up",  // previously down
+       "on-scroll-up": "~/.config/waybar/scripts/timer.sh down",
+       "on-scroll-down": "~/.config/waybar/scripts/timer.sh up",
        "tooltip": true,
        "escape": true
    }
@@ -78,7 +82,7 @@ Check out the latest updates and improvements! See [Release Notes](https://githu
    Add these styles and customize colors, fonts, and animations to your preference.
 
    <details>
-   <summary><strong>click to expand CSS styling</strong></summary>
+   <summary><strong>Click to Expand CSS styling</strong></summary>
 
    ```css
     /* Waybar Timer */
@@ -250,24 +254,37 @@ Now use: `timer 20m5s`, `timer 1h30s`, `pomo 25m5m4s`, `pomo 40 10 2` etc.
 
 ## Usage
 
+Based on the `CONTROLLER` logic in the script you provided, here is the updated **Mouse Controls** section for your README.
+
+I have updated the table to reflect the specific behaviors found in your script, particularly regarding **Right Click** (which behaves differently in Standard vs. Pomodoro modes) and the **Scroll** logic.
+
 ### Mouse Controls
 
-| action       | state                     | behavior                                                 |
-| ------------ | ------------------------- | -------------------------------------------------------- |
-| left click   | idle                      | enter selection mode                                     |
-|              | select                    | start timer                                              |
-|              | running                   | pause timer                                              |
-|              | paused                    | resume timer                                             |
-| right click  | idle                      | disable module (hide)                                    |
-|              | select (standard)         | cycle time presets (30s -> 1m -> 5m...)                  |
-|              | select (pomodoro)         | edit work ➡ edit break ➡ edit sessions                   |
-|              | running/paused (pomodoro) | skip current session (work ➡ break or break ➡ next work) |
-| middle click | any                       | reset / cancel                                           |
-| scroll up    | select                    | increase time (+1m)                                      |
-|              | running                   | add 1 minute to current timer                            |
-| scroll down  | idle                      | enter pomodoro mode                                      |
-|              | select                    | decrease time (-1m)                                      |
-|              | running                   | subtract 1 minute                                        |
+| Input            | State              | Behavior                                                     |
+| :--------------- | :----------------- | :----------------------------------------------------------- |
+| **Left Click**   | Disabled           | **Activate** (Wake up module)                                |
+|                  | Idle               | Enter **Standard Selection** mode                            |
+|                  | Select             | **Start** timer                                              |
+|                  | Running            | **Pause** timer                                              |
+|                  | Paused             | **Resume** timer                                             |
+| **Right Click**  | Idle               | **Disable** module (Hide/Sleep)                              |
+|                  | Select (Standard)  | **Cycle Presets** (1m ➡ 5m ➡ 10m...)                         |
+|                  | Select (Pomodoro)  | **Cycle Edit Mode** (Work Time ➡ Break Time ➡ Session Count) |
+|                  | Running (Pomodoro) | **Skip Session** (Instant Work ➡ Break or Break ➡ Work)      |
+|                  | Running (Standard) | Pause/Resume (same as Left Click)                            |
+| **Middle Click** | Any                | **Reset** (Cancel timer and return to Idle)                  |
+| **Scroll Up**    | Idle               | Enter **Standard Selection** mode                            |
+|                  | Any other state    | **Increase Time** (+1 minute)                                |
+| **Scroll Down**  | Idle               | Enter **Pomodoro Selection** mode                            |
+|                  | Any other state    | **Decrease Time** (-1 minute)                                |
+
+---
+
+### How to paste this into your README:
+
+1.  Open `README.md`.
+2.  Find the `### Mouse Controls` section.
+3.  Replace the existing table with the Markdown code above.
 
 ### CLI commands
 
@@ -378,13 +395,19 @@ SOUND_COMPLETE="${HOME}/.config/waybar/sounds/timer.mp3"
 
 ## Technical Details (efficiency)
 
-**State Management:** Stores state in `/dev/shm/waybar_timer.json`. This is RAM, not disk, saving SSD wear and ensuring top speed. The state persists across Waybar restarts and works seamlessly across multiple Waybar instances - all instances read/write to the same state file, keeping them in perfect sync.
+**State Management:** Stores state in `/dev/shm/waybar_timer.json`. This is RAM, not disk, saving SSD wear and ensuring top speed. The state persists across Waybar restarts and works seamlessly across multiple Waybar instances.
+
+**Singleton Pattern & Process Safety:**
+The script utilizes a PID lock file (`/tmp/waybar_timer.pid`) and Signal Traps (`trap`) to ensure stability.
+
+- **Auto-Cleanup:** When Waybar exits or restarts, the script detects the termination signal and cleans up its process immediately.
+- **Anti-Zombie:** If you toggle Waybar rapidly, the script detects any "stuck" previous instances and kills them before starting a new one. This prevents multiple timers from piling up in the background.
 
 **Event Loop:** Uses a Named Pipe (FIFO) at `/tmp/waybar_timer.fifo`.
 
 - The script sits at `read -t 1 <> pipe`
 - It waits 1 second OR until data is written to the pipe
-- When you click, the controller writes to the pipe, causing the timer to wake up and update instantly
+- When you click, the controller writes to the pipe, causing the timer to wake up and update instantly (0% CPU idle usage).
 
 **Sound Playback:** Uses `paplay` for audio playback, which is compatible with both PulseAudio and PipeWire systems. Sounds play asynchronously without blocking the timer.
 
@@ -392,6 +415,7 @@ SOUND_COMPLETE="${HOME}/.config/waybar/sounds/timer.mp3"
 
 - State file: `/dev/shm/waybar_timer.json`
 - FIFO pipe: `/tmp/waybar_timer.fifo`
+- Lock file: `/tmp/waybar_timer.pid`
 - Sound effects: `~/.config/waybar/sounds/`
 
 ## State File Format
@@ -447,9 +471,12 @@ rm -rf ~/.config/waybar/sounds  # optional: remove sound files
 
 ## Contributing
 
-Contributions are welcome and appreciated ❤️\
-Please see [Contributing Guide](CONTRIBUTING.md) for detailed information on how to get started.
+Contributions are welcome! If you have ideas for improvements or find bugs, feel free to open an issue or submit a pull request.
 
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+
+```
+
+```

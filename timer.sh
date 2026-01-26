@@ -1,8 +1,6 @@
 #!/bin/bash
 
-# -----------------------------------------------------------------------------
 # CONFIGURATION
-# -----------------------------------------------------------------------------
 
 # --- STANDARD TIMER PRESETS (Seconds) ---
 PRESETS=(60 300 600 900 1200 1500 1800 2700 3000 3600 4500 5400 6300 7200 9000 10800)
@@ -44,7 +42,7 @@ ICON_POMO_DONE=""
 ICON_POMO_BREAK=""
 
 
-# Files (Optimized to use RAM instead of Disk)
+# Files (Stored in RAM)
 STATE_FILE="/dev/shm/waybar_timer.json"
 PIPE_FILE="/tmp/waybar_timer.fifo"
 
@@ -60,12 +58,9 @@ play_sound() {
     fi
 }
 
-# -----------------------------------------------------------------------------
 # STATE MANAGEMENT
-# -----------------------------------------------------------------------------
 
 init_state() {
-    # Using builtin printf for time to save CPU (no 'date' process spawned)
     printf -v NOW '%(%s)T' -1
     echo "DISABLED|0|0|0|$NOW|0|0|0|1|1|5|1|0" > "$STATE_FILE"
 }
@@ -90,16 +85,12 @@ format_time() {
 }
 
 trigger_update() {
-    # OPTIMIZATION: Instead of slow pkill/signals, we simply write a byte to the FIFO.
-    # This breaks the 'read -t 1' loop in the server instance INSTANTLY.
     if [ -p "$PIPE_FILE" ]; then
         echo "1" > "$PIPE_FILE" &
     fi
 }
 
-# -----------------------------------------------------------------------------
 # CONTROLLER
-# -----------------------------------------------------------------------------
 if [ -n "$1" ]; then
     if [ ! -f "$STATE_FILE" ]; then init_state; fi
     read_state
@@ -109,7 +100,6 @@ if [ -n "$1" ]; then
     NEW_ACT="$NOW"
 
     case "$1" in
-        # --- NEW CLI ARGUMENTS ---
         "toggle")
             # Toggle play/pause
             if [ "$STATE" == "RUNNING" ]; then
@@ -188,35 +178,30 @@ if [ -n "$1" ]; then
 
         # --- POMODORO CLI ARGUMENTS ---
         "pomo")
-            shift # Remove 'pomo' from arguments
+            shift 
             ARGS="$*"
 
             # Defaults
             W=25; B=5; S=4
 
-            # Check if input uses m/b/s format (e.g. 25m 5b 4s)
             if [[ "$ARGS" =~ [0-9]+[mbs] ]]; then
                 [[ "$ARGS" =~ ([0-9]+)m ]] && W="${BASH_REMATCH[1]}"
                 [[ "$ARGS" =~ ([0-9]+)b ]] && B="${BASH_REMATCH[1]}"
                 [[ "$ARGS" =~ ([0-9]+)s ]] && S="${BASH_REMATCH[1]}"
             else
-                # Fallback to positional: Work Break Sessions (e.g. 25 5 4)
                 if [ -n "$1" ]; then W="$1"; fi
                 if [ -n "$2" ]; then B="$2"; fi
                 if [ -n "$3" ]; then S="$3"; fi
             fi
 
-            # Validate minimums
             [ "$W" -lt 1 ] && W=1
             [ "$B" -lt 1 ] && B=1
             [ "$S" -lt 1 ] && S=1
 
-            # Start Pomodoro (State: POMO_MSG -> automatically switches to RUNNING)
             WS "POMO_MSG" "$((W*60))" "$NOW" "0" "$NEW_ACT" "0" "1" "0" "1" "$S" "$W" "$B" "0"
             trigger_update; exit 0
             ;;
 
-        # --- STANDARD INTERACTION ---
         "up"|"down")
             MOD=$SCROLL_STEP
             [ "$1" == "down" ] && MOD=$(( -SCROLL_STEP ))
@@ -302,11 +287,9 @@ if [ -n "$1" ]; then
             ;;
 
         "right")
-             # SKIP SESSION IN POMODORO MODE WHEN RUNNING/PAUSED
              if [ "$MODE" == "1" ] && ([ "$STATE" == "RUNNING" ] || [ "$STATE" == "PAUSED" ]); then
                  $0 skip
                  exit 0
-             # REGULAR RIGHT CLICK BEHAVIOR
              elif [ "$STATE" == "IDLE" ]; then
                  WS "DISABLED" "0" "0" "0" "$NEW_ACT" "0" "0" "0" "0" "0" "0" "0" "0"
              elif [ "$STATE" == "SELECT" ]; then
@@ -333,21 +316,15 @@ if [ -n "$1" ]; then
              WS "RESET_ANIM" "0" "0" "0" "$NEW_ACT" "0" "0" "0" "0" "0" "0" "0" "0"
              ;;
 
-        # --- CATCH-ALL: STANDARD TIMER (10s, 5m, 1h30m) ---
         *)
             INPUT="$1"
             SECONDS=0
 
-            # Extract Hours (e.g. 1h)
             if [[ "$INPUT" =~ ([0-9]+)h ]]; then SECONDS=$((SECONDS + ${BASH_REMATCH[1]} * 3600)); fi
-            # Extract Minutes (e.g. 5m)
             if [[ "$INPUT" =~ ([0-9]+)m ]]; then SECONDS=$((SECONDS + ${BASH_REMATCH[1]} * 60)); fi
-            # Extract Seconds (e.g. 10s or just 300)
             if [[ "$INPUT" =~ ([0-9]+)s ]]; then
                 SECONDS=$((SECONDS + ${BASH_REMATCH[1]}))
             elif [[ "$INPUT" =~ ^[0-9]+$ ]]; then
-                # If it's a raw number and we haven't found h/m/s indicators, treat as seconds
-                # But we must verify if 'h' or 'm' wasn't present to avoid double counting '1h' as '1'.
                 if [[ ! "$INPUT" =~ [hm] ]]; then
                    SECONDS=$INPUT
                 fi
@@ -363,18 +340,37 @@ if [ -n "$1" ]; then
     trigger_update; exit 0
 fi
 
-# -----------------------------------------------------------------------------
-# SERVER LOOP (Efficient, Event-Driven)
-# -----------------------------------------------------------------------------
+# SINGLETON LOCK & CLEANUP
+PID_FILE="/tmp/waybar_timer.pid"
+
+cleanup() {
+    # Close FD 3 if open
+    exec 3>&-
+    rm -f "$PIPE_FILE" "$PID_FILE"
+    exit 0
+}
+
+trap cleanup SIGTERM SIGINT EXIT
+
+if [ -f "$PID_FILE" ]; then
+    OLD_PID=$(cat "$PID_FILE")
+    if [ -n "$OLD_PID" ] && [ "$OLD_PID" != "$$" ] && kill -0 "$OLD_PID" 2>/dev/null; then
+        kill "$OLD_PID" 2>/dev/null
+    fi
+fi
+echo $$ > "$PID_FILE"
+
 if [ ! -f "$STATE_FILE" ]; then init_state; fi
 
-# Create FIFO for instant updates if it doesn't exist
 if [ ! -p "$PIPE_FILE" ]; then mkfifo "$PIPE_FILE"; fi
 
-# Ensure the pipe stays open (avoid EOF loops)
 exec 3<> "$PIPE_FILE"
 
 while true; do
+    if ! kill -0 "$PPID" 2>/dev/null; then
+        cleanup
+    fi
+
     read_state
     printf -v NOW '%(%s)T' -1
 
@@ -390,8 +386,6 @@ while true; do
             TOOLTIP="Timer Disabled\nLeft Click: Activate"
             echo "{\"text\": \"$ICON\", \"tooltip\": \"$TOOLTIP\", \"class\": \"$CLASS\"}"
 
-            # OPTIMIZED: Block here indefinitely until FIFO receives data.
-            # 0% CPU usage. Wakes instantly on click.
             read -n 1 _ <&3
             continue ;;
 
@@ -399,7 +393,7 @@ while true; do
             ICON="$ICON_IDLE"
             TEXT="00:00"
             CLASS="idle"
-            TOOLTIP="Timer Idle\nScroll Up: Standard Timer\nScroll Down: Pomodoro Mode\nLeft Click: Set Timer\nRight Click: Disable"
+            TOOLTIP="Timer Idle\nScroll Up: Pomodoro Mode\nScroll Down: Standard Timer\nLeft Click: Set Timer\nRight Click: Disable"
 
             if [ $(( NOW - LAST_ACT )) -gt "$INACTIVITY_LIMIT" ]; then
                 WS "DISABLED" "0" "0" "0" "$NOW" "0" "0" "0" "0" "0" "0" "0" "0"
@@ -436,7 +430,6 @@ while true; do
         "POMO_MSG")
             if [ "$P_STAGE" == "0" ]; then TEXT="Work $P_CURRENT/$P_TOTAL"; ICON="$ICON_POMO_START"; else TEXT="Break Time"; ICON="$ICON_POMO_BREAK"; fi
             echo "{\"text\": \"$ICON $TEXT\", \"class\": \"pomo_msg\"}"
-            # Short sleep for animation, can stay as sleep or be read -t
             sleep 1.2
             WS "RUNNING" "$SEC_SET" "$NOW" "0" "$NEW_ACT" "$PRESET_IDX" "$MODE" "$P_STAGE" "$P_CURRENT" "$P_TOTAL" "$P_WORK_LEN" "$P_BREAK_LEN" "$P_EDIT_FOCUS"
             continue ;;
