@@ -320,16 +320,16 @@ Syntax: `pomo [WORK] [BREAK] [SESSIONS]`
 **Hyprland** (`~/.config/hypr/hyprland.conf`):
 
 ```conf
-bind = SUPER, P, exec, ~/.config/waybar/scripts/timer.sh toggle
-bind = SUPER_SHIFT, P, exec, ~/.config/waybar/scripts/timer.sh skip
+bind = SUPER, P, exec, ~/.config/waybar/scripts/timer.sh 1h30m
+bind = SUPER_SHIFT, P, exec, ~/.config/waybar/scripts/timer.sh pomo 25m 5b 4s 
 bind = SUPER_CTRL, P, exec, ~/.config/waybar/scripts/timer.sh reset
 ```
 
 **i3/Sway** (`~/.config/i3/config` or `~/.config/sway/config`):
 
 ```conf
-bindsym $mod+p exec ~/.config/waybar/scripts/timer.sh toggle
-bindsym $mod+Shift+p exec ~/.config/waybar/scripts/timer.sh skip
+bindsym $mod+p exec ~/.config/waybar/scripts/timer.sh 5m
+bindsym $mod+Shift+p exec ~/.config/waybar/scripts/timer.sh toggle
 bindsym $mod+Ctrl+p exec ~/.config/waybar/scripts/timer.sh reset
 ```
 
@@ -381,37 +381,6 @@ SOUND_COMPLETE="${HOME}/.config/waybar/sounds/timer.mp3"
 # ......
 #.......
 ```
-
-## Technical Details (efficiency)
-
-**State Management:** Stores state in `/dev/shm/waybar_timer.json`. This is RAM, not disk, saving SSD wear and ensuring top speed. The state persists across Waybar restarts and works seamlessly across multiple Waybar instances.
-
-**Singleton Pattern & Process Safety:**
-The script utilizes a PID lock file (`/tmp/waybar_timer.pid`) and Signal Traps (`trap`) to ensure stability.
-
-- **Auto-Cleanup:** When Waybar exits or restarts, the script detects the termination signal and cleans up its process immediately.
-- **Anti-Zombie:** If you toggle Waybar rapidly, the script detects any "stuck" previous instances and kills them before starting a new one. This prevents multiple timers from piling up in the background.
-
-**Event Loop:** Uses a Named Pipe (FIFO) at `/tmp/waybar_timer.fifo`.
-
-- The script sits at `read -t 1 <> pipe`
-- It waits 1 second OR until data is written to the pipe
-- When you click, the controller writes to the pipe, causing the timer to wake up and update instantly (0% CPU idle usage).
-
-**Sound Playback:** Uses `paplay` for audio playback, which is compatible with both PulseAudio and PipeWire systems. Sounds play asynchronously without blocking the timer.
-
-## File Locations
-
-- State file: `/dev/shm/waybar_timer.json`
-- FIFO pipe: `/tmp/waybar_timer.fifo`
-- Lock file: `/tmp/waybar_timer.pid`
-- Sound effects: `~/.config/waybar/sounds/`
-
-## State File Format
-
-The state is stored as: `STATE|SECONDS_SET|START_TIME|PAUSE_REMAINING|LAST_ACTIVITY|PRESET_INDEX|MODE|P_STAGE|P_CURRENT|P_TOTAL|P_WORK_LEN|P_BREAK_LEN|P_EDIT_FOCUS`
-
-Example: `RUNNING|300|1703123456|0|1703123456|2|0|0|0|0|0|0|0`
 
 ## Notifications & Sounds
 
