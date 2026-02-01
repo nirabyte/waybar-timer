@@ -230,7 +230,7 @@ Check out the latest updates and improvements! See [Release Notes](https://githu
 - Or run:
 
   ```bash
-  pkill waybar && nohup waybar &
+  pkill waybar && waybar &
   ```
 
 ## Alias (Optional)
