@@ -292,13 +292,17 @@ if [ -n "$1" ]; then
                  exit 0
              elif [ "$STATE" == "IDLE" ]; then
                  WS "DISABLED" "0" "0" "0" "$NEW_ACT" "0" "0" "0" "0" "0" "0" "0" "0"
-             elif [ "$STATE" == "SELECT" ]; then
-                 if [ "$MODE" == "0" ]; then
-                     NEXT=$(( PRESET_IDX + 1 ))
-                     [ "$NEXT" -ge "${#PRESETS[@]}" ] && NEXT=0
-                     NEW_TIME=${PRESETS[$NEXT]}
-                     WS "SELECT" "$NEW_TIME" "0" "0" "$NEW_ACT" "$NEXT" "0" "0" "0" "0" "0" "0" "0"
-                 else
+              elif [ "$STATE" == "SELECT" ]; then
+                  if [ "$MODE" == "0" ]; then
+                      if [ "$SEC_SET" -eq 0 ]; then
+                          NEXT=0
+                      else
+                          NEXT=$(( PRESET_IDX + 1 ))
+                          [ "$NEXT" -ge "${#PRESETS[@]}" ] && NEXT=0
+                      fi
+                      NEW_TIME=${PRESETS[$NEXT]}
+                      WS "SELECT" "$NEW_TIME" "0" "0" "$NEW_ACT" "$NEXT" "0" "0" "0" "0" "0" "0" "0"
+                  else
                      if [ "$P_EDIT_FOCUS" == "0" ]; then
                          WS "SELECT" "$SEC_SET" "0" "0" "$NEW_ACT" "$PRESET_IDX" "1" "0" "1" "$P_TOTAL" "$P_WORK_LEN" "$P_BREAK_LEN" "1"
                      elif [ "$P_EDIT_FOCUS" == "1" ]; then
