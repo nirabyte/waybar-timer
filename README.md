@@ -14,7 +14,6 @@ Check out the latest updates and improvements! See [Release Notes](https://githu
 
 - **Dual Mode: Standard Timer and Pomodoro** with customizable work/break cycles
 - Mouse and CLI controls (toggle, pause, resume, reset, skip)
-- Right-click to skip pomodoro sessions
 - Desktop notifications and sound effects
 - Dynamic visual feedback with state-specific icons and colors
 - Customizable presets and helpful tooltips
