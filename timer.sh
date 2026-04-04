@@ -45,6 +45,8 @@ ICON_POMO_BREAK=""
 
 STATE_FILE="/dev/shm/waybar_timer.json"
 PIPE_FILE="/tmp/waybar_timer_$$.fifo"
+CLICK_FILE="/dev/shm/waybar_timer_click"
+DBLCLICK_MS=300
 
 
 # --- HELPER FUNCTION FOR SOUND ---
@@ -285,6 +287,17 @@ if [ -n "$1" ]; then
             ;;
 
         "click")
+            NOW_MS=$(date +%s%3N)
+            LAST_CLICK=0
+            [ -f "$CLICK_FILE" ] && LAST_CLICK=$(cat "$CLICK_FILE")
+            echo "$NOW_MS" > "$CLICK_FILE"
+            CLICK_DELTA=$(( NOW_MS - LAST_CLICK ))
+
+            if [ "$CLICK_DELTA" -lt "$DBLCLICK_MS" ]; then
+                # Double click — reset to disabled
+                rm -f "$CLICK_FILE"
+                WS "DISABLED" "0" "0" "0" "$NEW_ACT" "0" "0" "0" "0" "0" "0" "0" "0"
+            else
                  case "$STATE" in
                      "DISABLED") WS "IDLE" "0" "0" "0" "$NEW_ACT" "0" "0" "0" "0" "0" "0" "0" "0" ;;
                      "IDLE")     WS "SELECT" "0" "0" "0" "$NEW_ACT" "0" "0" "0" "0" "0" "0" "0" "0" ;;
@@ -303,7 +316,8 @@ if [ -n "$1" ]; then
                     NEW_START=$(( NOW - SEC_SET + PAUSE_REM ))
                     WS "RUNNING" "$SEC_SET" "$NEW_START" "0" "$NEW_ACT" "$PRESET_IDX" "$MODE" "$P_STAGE" "$P_CURRENT" "$P_TOTAL" "$P_WORK_LEN" "$P_BREAK_LEN" "$P_EDIT_FOCUS" ;;
                 "DONE")     WS "IDLE" "0" "0" "0" "$NEW_ACT" "0" "0" "0" "0" "0" "0" "0" "0" ;;
-            esac
+                esac
+            fi
             ;;
 
         "right")
