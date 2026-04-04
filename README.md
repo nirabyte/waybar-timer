@@ -254,7 +254,7 @@ Now use: `timer 20m5s`, `timer 1h30s`, `pomo 25m5m4s`, `pomo 40 10 2` etc.
 |                  | Select             | **Start** timer                                              |
 |                  | Running            | **Pause** timer                                              |
 |                  | Paused             | **Resume** timer                                             |
-|**DBL left click**| Any other state    | **Reset** to **Disable** timer (300ms)                       |
+|**DBL Left Click**| Any other state    | **Reset** to **Disable** timer (300ms)                       |
 | **Right Click**  | Idle               | **Disable** module (Hide/Sleep)                              |
 |                  | Select (Standard)  | **Cycle Presets** (1m ➡ 5m ➡ 10m...)                         |
 |                  | Select (Pomodoro)  | **Cycle Edit Mode** (Work Time ➡ Break Time ➡ Session Count) |
